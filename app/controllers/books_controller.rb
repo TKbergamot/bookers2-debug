@@ -5,11 +5,16 @@ class BooksController < ApplicationController
 		@book = Book.find(params[:id])
 		@user = @book.user
 		@book_edit = Book.new
+		@favorite = Favorite.new
+		@book_comment = BookComment.new
+		@book_comments = @book.book_comments
   end
 
   def index
 		@books = Book.all #一覧表示するためにBookモデルの情報を全てくださいのall
 		@book = Book.new
+		@favorite = Favorite.new
+		@book_comment = BookComment.new
   end
 
   def create
@@ -46,7 +51,7 @@ class BooksController < ApplicationController
 
   def destroy
   	@book = Book.find(params[:id])
-  	@book.destoy
+  	@book.destroy
   	redirect_to books_path, notice: "successfully delete book!"
   end
 
