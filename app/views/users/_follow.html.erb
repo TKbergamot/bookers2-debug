@@ -1,0 +1,25 @@
+<div class="row">
+  <table class="table">
+    <tr>
+      <th>Following</th>
+      <th><%= link_to user.followings.count, following_user_path(user) %></th>
+    </tr>
+    <tr>
+      <th>Follower</th>
+      <th><%= link_to user.followers.count, followers_user_path(user) %></th>
+    </tr>
+  </table>
+  <% unless current_user == user %>
+    <% if current_user.following?(user)  %>
+      <%= form_for(current_user.relationships.find_by(follow_id: user.id), html: { method: :delete }) do |f| %>
+        <%= hidden_field_tag :follow_id, user.id %>
+        <%= f.submit 'Unfollow', class: 'col-xs-12 btn btn-danger' %>
+      <% end %>
+    <% else %>
+      <%= form_for(current_user.relationships.build) do |f| %>
+        <%= hidden_field_tag :follow_id, user.id %>
+        <%= f.submit 'Follow', class: 'col-xs-12 btn btn-primary' %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

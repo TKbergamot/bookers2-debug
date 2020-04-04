@@ -2,6 +2,7 @@
 <div class="col-xs-3">
 <h2>User info</h2>
 <%= render 'users/profile', user: current_user %>
+<%= render 'users/follow', user: current_user %>
 <!--メモ　右側の指定に注意。そこを間違えるとエラーが発生して表示されない -->
 
 <h2>New book</h2>
@@ -22,10 +23,27 @@
 	<tbody>
 		<% @users.each do |user| %>
 		<tr>
-			<td><%= attachment_image_tag(user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %></td>
+			<td><%= attachment_image_tag(user, :profile_image, :fill, 34, 34, fallback: "no-image-mini.jpg") %></td>
 			<td><%= user.name%></td>
 			<td><%= link_to "Show", user, class: "user_#{user.id}" %></td>
-		</tr>
+      <td>Following:<%= user.followings.count %></td>
+      <td>Follower:<%= user.followers.count %></td>
+			<td>
+				<% unless current_user == user %>
+					<% if current_user.following?(user)  %>
+						<%= form_for(current_user.relationships.find_by(follow_id: user.id), html: { method: :delete }) do |f| %>
+							<%= hidden_field_tag :follow_id, user.id %>
+							<%= f.submit 'Unfollow', class: 'col-xs-12 btn btn-danger' %>
+						<% end %>
+					<% else %>
+						<%= form_for(current_user.relationships.build) do |f| %>
+							<%= hidden_field_tag :follow_id, user.id %>
+							<%= f.submit 'Follow', class: 'col-xs-12 btn btn-primary' %>
+						<% end %>
+					<% end %>
+				<% end %>
+			</td>
+    </tr>
 		<% end %>
 	</tbody>
 </table>

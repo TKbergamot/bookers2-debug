@@ -2,6 +2,7 @@
 <div class="col-xs-3">
 <h2>User info</h2>
 <%= render 'users/profile', user: @user %>
+<%= render 'users/follow', user: @user %>
 <!--同コントローラーのviewで表示ならusersは省略可 -->
 
 <h2>New book</h2>
@@ -26,10 +27,10 @@
 		<tr>
 			<td>
 				<%= link_to (book.user) do %>
-				<%= attachment_image_tag(book.user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %>
+				<%= attachment_image_tag(book.user, :profile_image, :fill, 34, 34, fallback: "no-image-mini.jpg") %>
 				<% end %>
 			</td>
-			<td><%= link_to book.title,book, class: "book_#{book.id}" %></td>
+			<td><%= link_to book.title, book, class: "book_#{book.id}" %></td>
 			<td><%= book.body %></td>
 			<td>コメント数: <%= book.book_comments.count %></td>
 		</tr>
