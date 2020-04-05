@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   devise_for :users
-  resources :users, only: %i[show index edit update] do
+  resources :users, only: %i[show index edit update search] do
     member do
       get :following, :followers
     end
@@ -14,4 +14,5 @@ Rails.application.routes.draw do
   end
   root 'home#top'
   get 'home/about'
+  get 'search' => 'search#show'
 end

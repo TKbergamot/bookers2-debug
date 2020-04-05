@@ -1,0 +1,94 @@
+<div class="row">
+  <div class="col-xs-3">
+    <h2>User info</h2>
+    <%= render 'users/profile', user: current_user %>
+    <%= render 'users/follow', user: current_user %>
+    <!--メモ　右側の指定に注意。そこを間違えるとエラーが発生して表示されない -->
+
+    <h2>New book</h2>
+    <%= render 'books/newform', book: Book.new %>
+  </div>
+
+  <% if @place == "place_book" %>
+  	<div class="col-xs-9">
+		<h2>Search Books</h2>
+		<!--books一覧 -->
+		<table class="table table-hover table-inverse">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Title</th>
+					<th>Opinion</th>
+					<th colspan="3"></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<% @result.each do |book| %>
+				<tr>
+					<td>
+						<%= link_to(book.user) do %>
+						<%= attachment_image_tag(book.user, :profile_image, :fill, 34, 34, fallback: "no-image-mini.jpg") %>
+						<% end %>
+					</td>
+					<td><%= link_to book.title, book, class: "book_#{book.id}" %></td>
+					<td><%= book.body %></td>
+					<td>
+					<% if current_user.already_favorited?(book) %>
+						<%= button_to 'いいねを取り消す', book_favorites_path(book), method: :delete %>
+					<% else %>
+						<%= button_to 'いいね', book_favorites_path(book) %>
+					<% end %>
+					<%= book.favorites.count %>
+					<td>
+					<td>
+					コメント数: <%= book.book_comments.count %>
+					</td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+    <% else %>
+  <div class="col-xs-9">
+  <h2>Search Users</h2>
+  <!--users一覧 -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>image</th>
+        <th>name</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @result.each do |user| %>
+      <tr>
+        <td><%= attachment_image_tag(user, :profile_image, :fill, 34, 34, fallback: "no-image-mini.jpg") %></td>
+        <td><%= user.name%></td>
+        <td><%= link_to "Show", user, class: "user_#{user.id}" %></td>
+        <td>Following:<%= user.followings.count %></td>
+        <td>Follower:<%= user.followers.count %></td>
+        <td>
+          <% unless current_user == user %>
+            <% if current_user.following?(user)  %>
+              <%= form_for(current_user.relationships.find_by(follow_id: user.id), html: { method: :delete }) do |f| %>
+                <%= hidden_field_tag :follow_id, user.id %>
+                <%= f.submit 'Unfollow', class: 'col-xs-12 btn btn-danger' %>
+              <% end %>
+            <% else %>
+              <%= form_for(current_user.relationships.build) do |f| %>
+                <%= hidden_field_tag :follow_id, user.id %>
+                <%= f.submit 'Follow', class: 'col-xs-12 btn btn-primary' %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+    <% end %>
+  </table>
+  <!--users一覧 -->
+  </div>
+</div>
