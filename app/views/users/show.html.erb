@@ -6,7 +6,7 @@
 <!--同コントローラーのviewで表示ならusersは省略可 -->
 
 <h2>New book</h2>
-<%= render 'books/newform', book: @book %>
+<%= render 'books/newform', book: Book.new %>
 </div>
 <div class="col-xs-9">
 
@@ -37,6 +37,20 @@
 		<% end %>
 	</tbody>
 </table>
+<% if @user == current_user %>
+<div id ="map" style="height: 50vh"></div>
+<script>
+  let mapInstance
+
+  function initMap(){
+    mapInstance = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: <%= @latlng[0] %>, lng: <%= @latlng[1] %> },
+    zoom: 13
+    });
+  }
+</script>
+<script src ="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtjnijYs6XTannmZkwVbap88EedD9Ttm4&callback=initMap" async defer></script>
+<% end %>
 <!--books一覧 -->
 
 </div>

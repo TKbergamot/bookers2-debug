@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :relationships, only: %i[create destroy]
   resources :books do
     resource :favorites, only: %i[create destroy]
-    resources :book_comments, only: %i[create destroy]
+    resources :book_comments, as: 'comments', only: %i[create destroy]
   end
   root 'home#top'
   get 'home/about'

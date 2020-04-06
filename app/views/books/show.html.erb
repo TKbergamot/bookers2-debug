@@ -15,57 +15,21 @@
 
 		<table class="table">
 				<tr>
-					<td>
-						<%= link_to (@book.user) do %>
-						<%= attachment_image_tag(@book.user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %><br>
-						<%= @book.user.name %>
-						<% end %>
-					</td>
-					<td><%= link_to @book.title, @book %></td>
-					<td><%= @book.body %></td>
-					<td>
-					<% if current_user.already_favorited?(@book) %>
-						<%= button_to 'いいねを取り消す', book_favorites_path(@book), method: :delete %>
-					<% else %>
-						<%= button_to 'いいね', book_favorites_path(@book) %>
-					<% end %>
-					<%= @book.favorites.count %>
-					</td>
-					<td>コメント数: <%= @book.book_comments.count %></td>
-					<% if @book.user == current_user %>
-					<td><%= link_to "Edit",edit_book_path(@book), class: "btn-sm btn-success edit_book_#{@book.id}" %></td>
-					<td><%= link_to "Destroy",@book, method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger destroy_book_#{@book.id}" %></td>
-					<% end %>
+				<%= render @book %>
 				</tr>
 			</table>
 
 		<h2>Comments</h2>
-
-		<table class="table">
-
-			<% @book_comments.each do |c| %>
-				<tr>
-					<td>
-						<%= link_to (c.user) do %>
-						<%= attachment_image_tag(c.user, :profile_image, :fill, 34, 34, fallback: "no-image-mini.jpg") %><br>
-						<%= c.user.name %>
-						<% end %>
-					</td>
-					<td><%= c.content %></td>
-					<% if c.user == current_user %>
-					<td><%= link_to "Destroy",book_book_comment_path(c), method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger destroy_book_#{@book_comment.id}" %></td>
-					<% end %>
-				</tr>
-			<% end %>
-		</table>
+	<table id="comment" class="table">
+		<%= render @book_comments %>
+	</table>
 
 		<div class="form-group">
-			<%= form_for [@book, @book_comment] do |f| %>
-				<%= f.text_field :content, class:"form-control" %>
+			<%= form_with url: book_comments_path(@book) do |f| %>
+				<%= f.text_field :content, class:"form-control", id:"comment_field" %>
 				<br>
 				<%= f.submit 'コメントする' %>
 			<% end %>
 		</div>
-
 	</div>
 </div>
