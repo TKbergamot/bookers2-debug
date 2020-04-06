@@ -26,6 +26,8 @@ class UsersController < ApplicationController
 
     @latlng = results.first.coordinates
 
+    @key = ENV['API_KEY']
+
   end
 
 
