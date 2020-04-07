@@ -13,5 +13,18 @@
 </table>
 
 <div class="row">
+	<% if user.id == current_user.id %>
 	<%= link_to '',edit_user_path(user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_#{user.id}" %>
+	<% else %>
+		<% if @isRoom == true %>
+			<%= link_to 'Start Chat', "/rooms/#{@roomId}", class: "col-xs-12 btn btn-default" %>
+		<% else %>
+			<%= form_for @room do |f| %>
+				<%= fields_for @user_room do |e| %>
+					<%= e.hidden_field :user_id, value: @user.id %>
+				<% end %>
+				<%= f.submit "Start Chat", class:"col-xs-12 btn btn-default" %>
+			<% end %>
+		<% end %>
+	<% end %>
 </div>

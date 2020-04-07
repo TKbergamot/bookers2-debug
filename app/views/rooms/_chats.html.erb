@@ -1,0 +1,17 @@
+<div id="chat-<%= @room.id %>" style="width:50%;">
+  <% if @chats.present? %>
+    <% @chats.each do |m| %>
+      <% if m.user == current_user %>
+        <p style="text-align: right;"><strong><%= m.content %></strong>
+        <small>by <strong><%= link_to m.user.name ,user_path(m.user) %></strong></small></p>
+        <hr>
+      <% else %>
+        <p style="text-align: left;"><strong><%= m.content %></strong>
+        <small>by <strong><%= link_to m.user.name ,user_path(m.user) %></strong></small></p>
+        <hr>
+      <% end %>
+    <% end %>
+  <% else %>
+  <h3>No message yet.</h3>
+  <% end %>
+</div>

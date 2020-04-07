@@ -1,0 +1,8 @@
+
+<%= render 'rooms/chats' %>
+
+  <%= form_for @chat, remote: true do |f| %>
+    <%= f.text_field :content %>
+    <%= f.hidden_field :room_id, value: @room.id %>
+    <%= f.submit "投稿する" %>
+  <% end %>
