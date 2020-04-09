@@ -83,3 +83,5 @@ gem 'bootstrap-sass'
 gem 'dotenv-rails'
 
 gem 'geocoder'
+
+gem 'whenever', require: false
